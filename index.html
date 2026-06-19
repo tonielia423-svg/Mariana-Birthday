@@ -143,14 +143,67 @@ animation:floatUp 6s linear forwards;
 pointer-events:none;
 }
 
-</style>
+</style>#intro{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+z-index:999;
+overflow:hidden;
+display:flex;
+justify-content:center;
+align-items:center;
+}
+
+#introBg{
+position:absolute;
+width:100%;
+height:100%;
+background: radial-gradient(circle at top, #2a2a6a, #000);
+z-index:0;
+}
+
+#introHearts{
+position:absolute;
+width:100%;
+height:100%;
+z-index:3;
+top:0;
+left:0;
+}
+
+#introText{
+position:relative;
+z-index:1;
+font-size:24px;
+opacity:0;
+animation:textFade 2.5s ease forwards;
+text-align:center;
+padding:20px;
+}
+
+@keyframes textFade{
+to{opacity:1;}
+}
+
+.introHeart{
+position:absolute;
+font-size:22px;
+animation:floatUp 4s linear forwards;
+}
+
+@keyframes floatUp{
+0%{transform:translateY(100vh);opacity:1;}
+100%{transform:translateY(-20vh);opacity:0;}
+}
 </head>
 
 <body>
 
 <!-- INTRO -->
-<div id="intro">
-  <div id="bg"></div>
+<div <div id="intro">
+  <div id="introBg"></div>
   <div id="introHearts"></div>
 
   <div id="introText">
@@ -189,7 +242,35 @@ pointer-events:none;
 </audio>
 
 <script>
+function startIntroHearts(){
+setInterval(()=>{
+let h=document.createElement("div");
+h.className="introHeart";
+h.innerHTML="❤️";
 
+h.style.left=Math.random()*100+"vw";
+h.style.top="100vh";
+
+document.getElementById("introHearts").appendChild(h);
+
+setTimeout(()=>h.remove(),4000);
+},80);
+}
+
+window.onload=()=>{
+
+startIntroHearts();
+
+setTimeout(()=>{
+document.getElementById("introHearts").style.transition="opacity 2.5s ease";
+document.getElementById("introHearts").style.opacity="0";
+},2500);
+
+setTimeout(()=>{
+document.getElementById("intro").remove();
+},5000);
+
+};
 /* INTRO HEARTS */
 function startIntroHearts(){
 setInterval(()=>{
@@ -245,6 +326,7 @@ setTimeout(()=>heart.remove(),6000);
 }
 
 </script>
+
 
 </body>
 </html>
