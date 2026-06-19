@@ -25,7 +25,7 @@ align-items:center;
 text-align:center;
 }
 
-/* ===== BACKGROUND STARS ===== */
+/* ===== STARS ===== */
 #stars{
 position:fixed;
 inset:0;
@@ -165,7 +165,6 @@ margin-top:15px;
 
 <body>
 
-<!-- STARS -->
 <div id="stars"></div>
 
 <!-- INTRO -->
@@ -193,7 +192,7 @@ margin-top:15px;
 
 <div class="step" id="step3">
   <div class="small">
-    هاد يوم مميز و مهم عندي كتير يوم ميلادك يا نبض ئلبي و بؤبؤ عيني و روح روحي ، كان نفسي كون جنبك بهاد اليوم الحلو يا عشئي انتي ، كل عام وانتي بالف الف خير يا اغلى البشر ❤️
+    هاد يوم مميز ومهم كتير ❤️
   </div>
   <button onclick="nextStep(4)">ولسا في شي 😊</button>
 </div>
@@ -222,17 +221,17 @@ s.style.top=Math.random()*100+"%";
 document.getElementById("stars").appendChild(s);
 }
 
-/* ===== INTRO CONTROL (FIXED) ===== */
-let introRunning = false;
-let introInterval = null;
+/* ===== CONTROL FLAGS ===== */
+let introDone = false;
+let heartsStarted = false;
 
+/* ===== INTRO HEARTS ===== */
 function startIntroHearts(){
-if(introRunning) return;
-introRunning = true;
-
 const box=document.getElementById("introHearts");
 
-introInterval = setInterval(()=>{
+const interval=setInterval(()=>{
+if(introDone) return;
+
 const h=document.createElement("div");
 h.className="introHeart";
 h.innerHTML="❤️";
@@ -240,12 +239,13 @@ h.style.left=Math.random()*100+"vw";
 h.style.top="100vh";
 
 box.appendChild(h);
-
 setTimeout(()=>h.remove(),4000);
 },70);
 
+/* END INTRO */
 setTimeout(()=>{
-clearInterval(introInterval);
+introDone = true;
+clearInterval(interval);
 
 const intro=document.getElementById("intro");
 intro.style.transition="opacity 1.5s ease";
@@ -261,20 +261,17 @@ intro.remove();
 /* ===== START EXPERIENCE ===== */
 function startExperience(){
 document.getElementById("music").play();
-startIntroHearts();
-startHearts();
+startIntroHearts();   // فقط الانترو
 nextStep(2);
 }
 
-/* ===== NAVIGATION ===== */
+/* ===== NAV ===== */
 function nextStep(step){
 document.querySelectorAll(".step").forEach(s=>s.classList.remove("active"));
 document.getElementById("step"+step).classList.add("active");
 }
 
-/* ===== HEARTS SAFE LOOP ===== */
-let heartsStarted = false;
-
+/* ===== HEARTS SAFE ===== */
 function startHearts(){
 if(heartsStarted) return;
 heartsStarted = true;
@@ -286,15 +283,17 @@ h.innerHTML="❤️";
 h.style.left=Math.random()*100+"vw";
 
 document.body.appendChild(h);
-
 setTimeout(()=>h.remove(),6000);
 },500);
 }
 
-/* ===== REAL TIMER (SAFE) ===== */
+/* ===== TIMER ===== */
 const startDate=new Date("2024-01-14T20:00:00");
 
 function updateTimer(){
+const el=document.getElementById("timer");
+if(!el) return;
+
 const now=new Date();
 const diff=now-startDate;
 
@@ -304,9 +303,6 @@ const hours=Math.floor(minutes/60);
 const days=Math.floor(hours/24);
 
 const years=(days/365).toFixed(2);
-
-const el=document.getElementById("timer");
-if(!el) return;
 
 el.innerHTML=
 `❤️ من 14/01/2024 - الساعة 8 مساء<br>
