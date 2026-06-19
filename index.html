@@ -200,16 +200,40 @@ document.getElementById("stars").appendChild(star);
 
 function nextStep(step){
 
-document.querySelectorAll("[id^='step']").forEach(el=>{
-el.classList.add("hidden");
-});
 
-document.getElementById("step"+step).classList.remove("hidden");
+const current = document.querySelector("[id^='step']:not(.hidden)");
+const next = document.getElementById("step"+step);
 
-if(step===2){
-document.getElementById("music").play();
-startHearts();
+if(current){
+  current.style.opacity = "0";
+  current.style.transform = "translateY(10px)";
 }
+
+setTimeout(()=>{
+
+  document.querySelectorAll("[id^='step']").forEach(el=>{
+    el.classList.add("hidden");
+    el.style.opacity = "";
+    el.style.transform = "";
+  });
+
+  next.classList.remove("hidden");
+
+  next.style.opacity = "0";
+  next.style.transform = "translateY(10px)";
+
+  requestAnimationFrame(()=>{
+    next.style.transition = "0.6s ease";
+    next.style.opacity = "1";
+    next.style.transform = "translateY(0)";
+  });
+
+  if(step===2){
+    document.getElementById("music").play();
+    startHearts();
+  }
+
+},250);
 }
 
 function startHearts(){
