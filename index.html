@@ -28,10 +28,7 @@ text-align:center;
 /* ===== INTRO ===== */
 #intro{
 position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
+inset:0;
 z-index:999;
 display:flex;
 justify-content:center;
@@ -41,17 +38,15 @@ overflow:hidden;
 
 #introBg{
 position:absolute;
-width:100%;
-height:100%;
-background:radial-gradient(circle at top,#1a1a40,#000);
+inset:0;
+background:radial-gradient(circle at top,#2a2a6a,#000);
 z-index:0;
 }
 
 #introHearts{
 position:absolute;
-width:100%;
-height:100%;
-z-index:2;
+inset:0;
+z-index:3;
 }
 
 #introText{
@@ -80,16 +75,16 @@ animation:floatUp 4s linear forwards;
 
 /* ===== MAIN ===== */
 .container{
-padding:20px;
-max-width:700px;
 width:100%;
+max-width:700px;
+padding:20px;
 }
 
 .step{
 position:absolute;
 width:100%;
 opacity:0;
-transform:translateY(20px);
+transform:translateY(15px);
 transition:0.6s ease;
 pointer-events:none;
 }
@@ -101,7 +96,7 @@ pointer-events:auto;
 }
 
 button{
-margin-top:25px;
+margin-top:20px;
 padding:12px 24px;
 border:none;
 border-radius:25px;
@@ -112,7 +107,7 @@ cursor:pointer;
 }
 
 .message{font-size:22px;line-height:1.8;}
-.small{font-size:18px;line-height:1.8;margin-top:20px;}
+.small{font-size:18px;line-height:1.8;margin-top:15px;}
 
 .heart{
 position:fixed;
@@ -122,7 +117,7 @@ animation:floatUp 6s linear forwards;
 
 #timer{
 font-size:22px;
-margin-top:15px;
+margin-top:10px;
 }
 
 </style>
@@ -174,19 +169,18 @@ margin-top:15px;
 /* ===== INTRO HEARTS ===== */
 function startIntroHearts(){
 setInterval(()=>{
-let h=document.createElement("div");
+const h=document.createElement("div");
 h.className="introHeart";
 h.innerHTML="❤️";
 h.style.left=Math.random()*100+"vw";
 h.style.top="100vh";
 document.getElementById("introHearts").appendChild(h);
 setTimeout(()=>h.remove(),4000);
-},80);
+},70);
 }
 
 /* REMOVE INTRO */
 window.onload=()=>{
-
 startIntroHearts();
 
 setTimeout(()=>{
@@ -196,7 +190,7 @@ setTimeout(()=>document.getElementById("intro").remove(),2000);
 },3500);
 };
 
-/* ===== STEPS ===== */
+/* ===== NAV ===== */
 function nextStep(step){
 document.querySelectorAll(".step").forEach(s=>s.classList.remove("active"));
 document.getElementById("step"+step).classList.add("active");
@@ -210,7 +204,7 @@ startHearts();
 /* ===== HEARTS ===== */
 function startHearts(){
 setInterval(()=>{
-let h=document.createElement("div");
+const h=document.createElement("div");
 h.className="heart";
 h.innerHTML="❤️";
 h.style.left=Math.random()*100+"vw";
@@ -219,7 +213,7 @@ setTimeout(()=>h.remove(),6000);
 },600);
 }
 
-/* ===== REAL TIMER ===== */
+/* ===== TIMER ===== */
 const startDate=new Date("2024-01-14T00:00:00");
 
 function updateTimer(){
