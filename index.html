@@ -1,1 +1,247 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<title>Mariana ❤️</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Tahoma,sans-serif;
+}
+
+body{
+background:#000;
+color:white;
+overflow:hidden;
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+text-align:center;
+}
+
+#stars{
+position:fixed;
+width:100%;
+height:100%;
+top:0;
+left:0;
+z-index:-2;
+background:black;
+}
+
+.star{
+position:absolute;
+background:white;
+border-radius:50%;
+animation:twinkle 3s infinite;
+}
+
+@keyframes twinkle{
+0%,100%{opacity:.2;}
+50%{opacity:1;}
+}
+
+.container{
+padding:25px;
+max-width:700px;
+}
+
+.hidden{
+display:none;
+}
+
+button{
+margin-top:25px;
+padding:12px 24px;
+font-size:18px;
+border:none;
+border-radius:30px;
+cursor:pointer;
+background:#ff4f8b;
+color:white;
+}
+
+.message{
+font-size:28px;
+line-height:1.8;
+}
+
+.small{
+font-size:22px;
+line-height:1.8;
+margin-top:20px;
+}
+
+#timer{
+font-size:28px;
+margin-top:25px;
+line-height:1.8;
+}
+
+.heart{
+position:fixed;
+font-size:24px;
+animation:floatUp 6s linear forwards;
+pointer-events:none;
+}
+
+@keyframes floatUp{
+0%{
+transform:translateY(0);
+opacity:1;
+}
+100%{
+transform:translateY(-100vh);
+opacity:0;
+}
+}
+</style>
+</head>
+
+<body>
+
+<div id="stars"></div>
+
+<div class="container">
+
+<div id="step1">
+<div class="message">
+مساء الخير ماريانا يا احلى وردة بهالكون ❤️
+</div>
+
+<button onclick="nextStep(2)">
+اضغطي هون 😊
+</button>
+</div>
+
+<div id="step2" class="hidden">
+
+<div id="timer"></div>
+
+<div class="small">
+هل سنين كلها يوم عن يوم و دقيقة عن دقيقة حبك بئلبي كل يوم بزيد ❤️
+</div>
+
+<button onclick="nextStep(3)">
+كملي 😘
+</button>
+</div>
+
+<div id="step3" class="hidden">
+
+<div class="small">
+هاد يوم مميز و مهم عندي كتير يوم ميلادك يا نبض ئلبي و بؤبؤ عيني و روح روحي ، كان نفسي كون جنبك بهاد اليوم الحلو يا عشئي انتي ، كل عام وانتي بالف الف خير يا اغلى البشر يا احلى وائرب انسانة لئلبي بكل الدنيا وعئبال المية سنة يا روح الروح ❤️
+</div>
+
+<button onclick="nextStep(4)">
+ولسا في شي 😊
+</button>
+
+</div>
+
+<div id="step4" class="hidden">
+
+<div class="message">
+وجودك بحياتي خلا الها معنى و دخلتي عليي بالخير كل عام وانتي بالف خير يا كل الخير ❤️
+</div>
+
+<div style="margin-top:35px;font-size:36px;">
+❤️ ماريانا ❤️
+</div>
+
+<div style="margin-top:15px;font-size:34px;">
+🎂 26 🎂
+</div>
+
+</div>
+
+<audio id="music" loop>
+<source src="music.m4a" type="audio/mp4">
+</audio>
+
+</div>
+
+<script>
+
+for(let i=0;i<150;i++){
+let star=document.createElement("div");
+star.className="star";
+
+let size=Math.random()*3;
+
+star.style.width=size+"px";
+star.style.height=size+"px";
+star.style.left=Math.random()*100+"%";
+star.style.top=Math.random()*100+"%";
+
+document.getElementById("stars").appendChild(star);
+}
+
+function nextStep(step){
+
+document.querySelectorAll("[id^='step']").forEach(el=>{
+el.classList.add("hidden");
+});
+
+document.getElementById("step"+step).classList.remove("hidden");
+
+if(step===2){
+document.getElementById("music").play();
+startHearts();
+}
+}
+
+function startHearts(){
+
+setInterval(()=>{
+
+let heart=document.createElement("div");
+
+heart.className="heart";
+heart.innerHTML="❤️";
+
+heart.style.left=Math.random()*100+"vw";
+
+document.body.appendChild(heart);
+
+setTimeout(()=>{
+heart.remove();
+},6000);
+
+},700);
+}
+
+const startDate=new Date("2024-01-14T00:00:00");
+
+function updateTimer(){
+
+const now=new Date();
+
+const diff=now-startDate;
+
+const days=Math.floor(diff/(1000*60*60*24));
+const years=(days/365).toFixed(1);
+
+document.getElementById("timer").innerHTML=
+`
+❤️ من 14/01/2024 ❤️
+<br><br>
+${years} سنة
+<br>
+${days} يوم
+`;
+}
+
+setInterval(updateTimer,1000);
+updateTimer();
+
+</script>
+
+</body>
+</html>
