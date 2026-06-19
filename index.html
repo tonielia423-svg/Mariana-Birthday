@@ -25,6 +25,28 @@ align-items:center;
 text-align:center;
 }
 
+/* ===== STARS ===== */
+#stars{
+position:fixed;
+inset:0;
+z-index:-1;
+background:black;
+}
+
+.star{
+position:absolute;
+width:2px;
+height:2px;
+background:white;
+border-radius:50%;
+animation:twinkle 3s infinite;
+}
+
+@keyframes twinkle{
+0%,100%{opacity:.2;}
+50%{opacity:1;}
+}
+
 /* ===== INTRO ===== */
 #intro{
 position:fixed;
@@ -47,11 +69,12 @@ z-index:0;
 position:absolute;
 inset:0;
 z-index:3;
+pointer-events:none;
 }
 
 #introText{
 position:relative;
-z-index:1;
+z-index:2;
 font-size:24px;
 opacity:0;
 animation:fadeIn 2.5s ease forwards;
@@ -66,10 +89,11 @@ to{opacity:1;}
 position:absolute;
 font-size:22px;
 animation:floatUp 4s linear forwards;
+opacity:1;
 }
 
 @keyframes floatUp{
-0%{transform:translateY(100vh);opacity:1;}
+0%{transform:translateY(100vh);}
 100%{transform:translateY(-20vh);opacity:0;}
 }
 
@@ -125,6 +149,9 @@ margin-top:10px;
 
 <body>
 
+<!-- STARS -->
+<div id="stars"></div>
+
 <!-- INTRO -->
 <div id="intro">
   <div id="introBg"></div>
@@ -166,31 +193,54 @@ margin-top:10px;
 
 <script>
 
+/* ===== STARS ===== */
+for(let i=0;i<120;i++){
+const s=document.createElement("div");
+s.className="star";
+s.style.left=Math.random()*100+"%";
+s.style.top=Math.random()*100+"%";
+document.getElementById("stars").appendChild(s);
+}
+
 /* ===== INTRO HEARTS ===== */
+let introDone=false;
+
 function startIntroHearts(){
-setInterval(()=>{
+const container=document.getElementById("introHearts");
+
+const interval=setInterval(()=>{
+if(introDone) return;
+
 const h=document.createElement("div");
 h.className="introHeart";
 h.innerHTML="❤️";
 h.style.left=Math.random()*100+"vw";
 h.style.top="100vh";
-document.getElementById("introHearts").appendChild(h);
-setTimeout(()=>h.remove(),4000);
-},70);
-}
 
-/* REMOVE INTRO */
-window.onload=()=>{
-startIntroHearts();
+container.appendChild(h);
+
+setTimeout(()=>h.remove(),4000);
+},60);
 
 setTimeout(()=>{
+introDone=true;
+clearInterval(interval);
+
 document.getElementById("intro").style.transition="opacity 2s ease";
 document.getElementById("intro").style.opacity="0";
-setTimeout(()=>document.getElementById("intro").remove(),2000);
-},3500);
+
+setTimeout(()=>{
+document.getElementById("intro").remove();
+},2000);
+
+},4000);
+}
+
+window.onload=()=>{
+startIntroHearts();
 };
 
-/* ===== NAV ===== */
+/* ===== STEPS ===== */
 function nextStep(step){
 document.querySelectorAll(".step").forEach(s=>s.classList.remove("active"));
 document.getElementById("step"+step).classList.add("active");
@@ -213,18 +263,22 @@ setTimeout(()=>h.remove(),6000);
 },600);
 }
 
-/* ===== TIMER ===== */
+/* ===== REAL TIMER ===== */
 const startDate=new Date("2024-01-14T00:00:00");
 
 function updateTimer(){
 const now=new Date();
 const diff=now-startDate;
 
-const days=Math.floor(diff/(1000*60*60*24));
-const years=(days/365).toFixed(1);
+const seconds=Math.floor(diff/1000);
+const minutes=Math.floor(seconds/60);
+const hours=Math.floor(minutes/60);
+const days=Math.floor(hours/24);
+
+const years=(days/365).toFixed(2);
 
 document.getElementById("timer").innerHTML=
-`❤️ منذ 14/01/2024<br><br>${years} سنة<br>${days} يوم`;
+`❤️ منذ 14/01/2024<br>${years} سنة<br>${days} يوم<br>${hours} ساعة<br>${minutes} دقيقة`;
 }
 
 setInterval(updateTimer,1000);
