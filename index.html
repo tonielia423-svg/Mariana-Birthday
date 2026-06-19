@@ -24,14 +24,290 @@ justify-content:center;
 align-items:center;
 text-align:center;
 }
+
+/* ===== STARS ===== */
+#stars{
+position:fixed;
+inset:0;
+z-index:-3;
+}
+
+.star{
+position:absolute;
+width:2px;
+height:2px;
+background:white;
+border-radius:50%;
+animation:twinkle 3s infinite;
+}
+
+@keyframes twinkle{
+0%,100%{opacity:.2;}
+50%{opacity:1;}
+}
+
+/* ===== INTRO ===== */
+#intro{
+position:fixed;
+inset:0;
+z-index:999;
+display:flex;
+justify-content:center;
+align-items:center;
+overflow:hidden;
+}
+
+#introBg{
+position:absolute;
+inset:0;
+background:radial-gradient(circle at top,#1b1b3a,#000);
+}
+
+#introHearts{
+position:absolute;
+inset:0;
+pointer-events:none;
+z-index:2;
+}
+
+#introText{
+position:relative;
+z-index:3;
+font-size:5vw;
+max-width:90%;
+opacity:0;
+animation:fadeIn 2s ease forwards;
+padding:20px;
+}
+
+@keyframes fadeIn{
+to{opacity:1;}
+}
+
+.introHeart{
+position:absolute;
+font-size:22px;
+animation:floatUp 4s linear forwards;
+}
+
+@keyframes floatUp{
+0%{transform:translateY(100vh);opacity:1;}
+100%{transform:translateY(-20vh);opacity:0;}
+}
+
+/* ===== STEPS ===== */
+.step{
+position:absolute;
+width:90%;
+max-width:750px;
+opacity:0;
+transform:translateY(20px);
+transition:0.6s ease;
+pointer-events:none;
+}
+
+.step.active{
+opacity:1;
+transform:translateY(0);
+pointer-events:auto;
+}
+
+/* ===== TEXT ===== */
+.small{font-size:4.5vw;line-height:1.8;}
+.big{font-size:7vw;margin-top:10px;}
+#timer{font-size:4.5vw;margin-bottom:10px;}
+
+/* ===== BUTTON ===== */
+button{
+margin-top:20px;
+padding:12px 24px;
+border:none;
+border-radius:25px;
+background:#ff4f8b;
+color:white;
+font-size:16px;
+cursor:pointer;
+}
+
+/* ===== HEARTS ===== */
+.heart{
+position:fixed;
+font-size:20px;
+animation:floatUp 6s linear forwards;
+}
+
+/* ===== FIREWORKS ===== */
+.firework{
+position:fixed;
+width:6px;
+height:6px;
+border-radius:50%;
+background:gold;
+animation:boom 1s ease-out forwards;
+}
+
+@keyframes boom{
+0%{transform:scale(1);opacity:1;}
+100%{transform:scale(10);opacity:0;}
+}
 </style>
 </head>
 
 <body>
 
-TEST-OK
+<div id="stars"></div>
 
-<h1>إذا شفت هالكلمة يعني الصفحة شغالة صح</h1>
+<!-- INTRO -->
+<div id="intro">
+  <div id="introBg"></div>
+  <div id="introHearts"></div>
+
+  <div id="introText">
+    مساء الخير ماريانا يا احلى وردة بهالكون ❤️
+  </div>
+</div>
+
+<!-- STEP 1 -->
+<div class="step active" id="step1">
+  <button onclick="start()">اضغطي هون 😊</button>
+</div>
+
+<!-- STEP 2 -->
+<div class="step" id="step2">
+  <div id="timer"></div>
+  <div class="small">
+    هل سنين كلها يوم عن يوم و دقيقة عن دقيقة حبك بئلبي كل يوم بزيد ❤️
+  </div>
+  <button onclick="next(3)">كملي 😘</button>
+</div>
+
+<!-- STEP 3 -->
+<div class="step" id="step3">
+  <div class="small">
+    هاد يوم مميز و مهم عندي كتير يوم ميلادك يا نبض ئلبي ❤️
+  </div>
+  <button onclick="next(4)">ولسا في شي 😊</button>
+</div>
+
+<!-- STEP 4 -->
+<div class="step" id="step4">
+  <div class="small">
+    وجودك بحياتي خلا الها معنى ❤️
+  </div>
+
+  <div class="big">❤️ ماريانا ❤️</div>
+  🎂 26 🎂
+</div>
+
+<audio id="music" loop>
+<source src="music.m4a" type="audio/mp4">
+</audio>
+
+<script>
+
+/* ===== STARS ===== */
+for(let i=0;i<120;i++){
+const s=document.createElement("div");
+s.className="star";
+s.style.left=Math.random()*100+"%";
+s.style.top=Math.random()*100+"%";
+document.getElementById("stars").appendChild(s);
+}
+
+/* ===== INTRO HEARTS ===== */
+let introDone=false;
+
+function introHearts(){
+const box=document.getElementById("introHearts");
+
+const t=setInterval(()=>{
+if(introDone) return;
+
+const h=document.createElement("div");
+h.className="introHeart";
+h.innerHTML="❤️";
+h.style.left=Math.random()*100+"vw";
+h.style.top="100vh";
+
+box.appendChild(h);
+setTimeout(()=>h.remove(),4000);
+},50);
+
+setTimeout(()=>{
+introDone=true;
+clearInterval(t);
+
+document.getElementById("intro").style.opacity="0";
+setTimeout(()=>document.getElementById("intro").remove(),1500);
+
+},4000);
+}
+
+/* ===== START ===== */
+function start(){
+document.getElementById("music").play().catch(()=>{});
+introHearts();
+startHearts();
+next(2);
+}
+
+/* ===== NAV ===== */
+function next(n){
+document.querySelectorAll(".step").forEach(s=>s.classList.remove("active"));
+document.getElementById("step"+n).classList.add("active");
+}
+
+/* ===== HEARTS ===== */
+function startHearts(){
+setInterval(()=>{
+const h=document.createElement("div");
+h.className="heart";
+h.innerHTML="❤️";
+h.style.left=Math.random()*100+"vw";
+document.body.appendChild(h);
+setTimeout(()=>h.remove(),6000);
+},400);
+}
+
+/* ===== TIMER ===== */
+const startDate=new Date("2024-01-14T20:00:00");
+
+function updateTimer(){
+const el=document.getElementById("timer");
+if(!el) return;
+
+const now=new Date();
+const diff=now-startDate;
+
+const s=Math.floor(diff/1000);
+const m=Math.floor(s/60);
+const h=Math.floor(m/60);
+const d=Math.floor(h/24);
+
+el.innerHTML=
+`❤️ من 14/01/2024 - الساعة 8 مساء<br>
+${d} يوم<br>
+${h} ساعة<br>
+${m} دقيقة<br>
+${s} ثانية`;
+}
+
+setInterval(updateTimer,1000);
+updateTimer();
+
+/* ===== FIREWORKS (FINAL SCREEN) ===== */
+setInterval(()=>{
+if(document.getElementById("step4")?.classList.contains("active")){
+const f=document.createElement("div");
+f.className="firework";
+f.style.left=Math.random()*100+"vw";
+f.style.top=Math.random()*100+"vh";
+document.body.appendChild(f);
+setTimeout(()=>f.remove(),1000);
+}
+},300);
+
+</script>
 
 </body>
 </html>
