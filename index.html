@@ -66,8 +66,8 @@ background:radial-gradient(circle at top,#2a2a6a,#000);
 #introHearts{
 position:absolute;
 inset:0;
-z-index:2;
 pointer-events:none;
+z-index:2;
 }
 
 #introText{
@@ -125,13 +125,8 @@ cursor:pointer;
 }
 
 /* ===== TEXT ===== */
-.message{
-font-size:5vw;
-line-height:1.8;
-}
-
 .small{
-font-size:4.2vw;
+font-size:4.5vw;
 line-height:1.8;
 margin-top:15px;
 }
@@ -159,7 +154,6 @@ line-height:2;
 font-size:7vw;
 margin-top:15px;
 }
-
 </style>
 </head>
 
@@ -177,7 +171,7 @@ margin-top:15px;
   </div>
 </div>
 
-<!-- MAIN -->
+<!-- STEPS -->
 <div class="step active" id="step1">
   <button onclick="startExperience()">اضغطي هون 😊</button>
 </div>
@@ -192,7 +186,7 @@ margin-top:15px;
 
 <div class="step" id="step3">
   <div class="small">
-    هاد يوم مميز ومهم كتير ❤️
+    هاد يوم مميز ومهم ❤️
   </div>
   <button onclick="nextStep(4)">ولسا في شي 😊</button>
 </div>
@@ -221,9 +215,9 @@ s.style.top=Math.random()*100+"%";
 document.getElementById("stars").appendChild(s);
 }
 
-/* ===== CONTROL FLAGS ===== */
-let introDone = false;
-let heartsStarted = false;
+/* ===== FLAGS ===== */
+let introDone=false;
+let heartsStarted=false;
 
 /* ===== INTRO HEARTS ===== */
 function startIntroHearts(){
@@ -242,27 +236,30 @@ box.appendChild(h);
 setTimeout(()=>h.remove(),4000);
 },70);
 
-/* END INTRO */
 setTimeout(()=>{
-introDone = true;
+introDone=true;
 clearInterval(interval);
 
 const intro=document.getElementById("intro");
 intro.style.transition="opacity 1.5s ease";
 intro.style.opacity="0";
 
-setTimeout(()=>{
-intro.remove();
-},1600);
+setTimeout(()=>intro.remove(),1500);
 
 },4000);
 }
 
-/* ===== START EXPERIENCE ===== */
+/* ===== START EXPERIENCE (FIXED AUDIO SAFE) ===== */
 function startExperience(){
-document.getElementById("music").play();
-startIntroHearts();   // فقط الانترو
 nextStep(2);
+
+const music=document.getElementById("music");
+if(music){
+  music.play().catch(()=>{});
+}
+
+startIntroHearts();
+startHearts();
 }
 
 /* ===== NAV ===== */
@@ -271,23 +268,23 @@ document.querySelectorAll(".step").forEach(s=>s.classList.remove("active"));
 document.getElementById("step"+step).classList.add("active");
 }
 
-/* ===== HEARTS SAFE ===== */
+/* ===== HEARTS ===== */
 function startHearts(){
 if(heartsStarted) return;
-heartsStarted = true;
+heartsStarted=true;
 
 setInterval(()=>{
 const h=document.createElement("div");
 h.className="heart";
 h.innerHTML="❤️";
 h.style.left=Math.random()*100+"vw";
-
 document.body.appendChild(h);
+
 setTimeout(()=>h.remove(),6000);
 },500);
 }
 
-/* ===== TIMER ===== */
+/* ===== TIMER REAL ===== */
 const startDate=new Date("2024-01-14T20:00:00");
 
 function updateTimer(){
